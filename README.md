@@ -6,6 +6,7 @@
 2. Convert the project to Typescript.
 3. Initialize tsconfig.
 4. Create .gitignore file to ignore the node_modules
+
 ## Problem Description:
 
 Create A basic Express application, that makes a CRUD operation (create, read, update, delete) using SQLite database, document and publish your endpoints using postman.
@@ -14,12 +15,11 @@ In this project, you’ll build a basic CRUD (Create, Read, Update, Delete) for 
 ## Requirements:
 
 IMPLEMENT AUTHORIZATION AND AUTHENTICATION: PROTECT ALL ROUTES. ONLY THE LOGGED-IN DOCTORS CAN PERFORM THE FOLLOWING OPERATIONS
+
 - Browsing through reports
 - You can add report.
 - You can edit report.
 - You can delete report.
-
-
 
 ## How will I complete this project?
 
@@ -41,7 +41,7 @@ IMPLEMENT AUTHORIZATION AND AUTHENTICATION: PROTECT ALL ROUTES. ONLY THE LOGGED-
    gender:'m',
    phone:'+2347085647535',
  }
- 
+
    Report:[
    {
   patientId: "databaseID",
@@ -59,13 +59,6 @@ IMPLEMENT AUTHORIZATION AND AUTHENTICATION: PROTECT ALL ROUTES. ONLY THE LOGGED-
    ......
 ]
 ```
-
-## FRONTEND
-
-- Page to display all report from all doctors
-- Implement an admin/dashboard area to add, edit and delete ( Dotors can only edit and delete Report created by them)
-- In the admin/dashboard implement a page to shows the Doctors information
-- Create a Login Page and Sign Up Page
 
 ## Test coverage
 
