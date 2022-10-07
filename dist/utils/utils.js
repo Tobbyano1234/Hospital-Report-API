@@ -27,7 +27,7 @@ exports.registerSchema = joi_1.default.object()
     specialization: joi_1.default.string().required(),
     gender: joi_1.default.string().required(),
     phoneNumber: joi_1.default.string()
-        .length(13)
+        .length(11)
         .pattern(/^[0-9]+$/)
         .required(),
     password: joi_1.default.string()

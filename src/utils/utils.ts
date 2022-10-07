@@ -24,7 +24,7 @@ export const registerSchema = Joi.object()
     specialization: Joi.string().required(),
     gender: Joi.string().required(),
     phoneNumber: Joi.string()
-      .length(13)
+      .length(11)
       .pattern(/^[0-9]+$/)
       .required(),
     password: Joi.string()
