@@ -91,12 +91,11 @@ export async function getSinglePatientRecord(
 ) {
   try {
     const { patientId } = req.params;
-    console.log(patientId);
-    console.log("before");
+
     const record = await patientInstance.findOne({
       where: { patientId },
     });
-    console.log("after");
+
     return res
       .status(httpStatus.OK)
       .json({ message: "Patient report fetched successfully", record });

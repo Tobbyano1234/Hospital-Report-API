@@ -76,12 +76,9 @@ exports.getPatientRecord = getPatientRecord;
 async function getSinglePatientRecord(req, res, next) {
     try {
         const { patientId } = req.params;
-        console.log(patientId);
-        console.log("before");
         const record = await reportModel_1.patientInstance.findOne({
             where: { patientId },
         });
-        console.log("after");
         return res
             .status(http_status_1.default.OK)
             .json({ message: "Patient report fetched successfully", record });
