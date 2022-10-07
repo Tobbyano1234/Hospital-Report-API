@@ -1,10 +1,14 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deletePatientRecord = exports.updatePatientRecord = exports.getSinglePatientRecord = exports.getPatientRecord = exports.PatientRecord = void 0;
 const uuid_1 = require("uuid");
 const reportModel_1 = require("../model/reportModel");
 const utils_1 = require("../utils/utils");
 const doctorModel_1 = require("../model/doctorModel");
+const http_status_1 = __importDefault(require("http-status"));
 async function PatientRecord(req, res, next) {
     const id = (0, uuid_1.v4)();
     try {
@@ -12,19 +16,25 @@ async function PatientRecord(req, res, next) {
         const validateResult = utils_1.createPatientSchema.validate(req.body, utils_1.options);
         if (validateResult.error) {
             return res
-                .status(400)
+                .status(http_status_1.default.BAD_REQUEST)
                 .json({ Error: validateResult.error.details[0].message });
         }
-        let patient = { patientId: id, ...req.body, DoctorId: verified.id };
+        const doctor = doctorModel_1.DoctorsInstance.findOne({ where: { id: verified.id } });
+        if (!doctor) {
+            return res.status(http_status_1.default.BAD_REQUEST).json({
+                message: "Doctor not found",
+            });
+        }
+        let patient = { patientId: id, ...req.body, doctorId: verified.id };
         const record = await reportModel_1.patientInstance.create(patient);
-        res
-            .status(201)
-            .json({ msg: "You have successfully created a patient report", record });
+        return res.status(http_status_1.default.CREATED).json({
+            message: "Patient report created successfully",
+            record,
+        });
     }
-    catch (err) {
-        res.status(500).json({
-            msg: "Failed to create patient report",
-            route: "/create",
+    catch (error) {
+        return res.status(http_status_1.default.INTERNAL_SERVER_ERROR).json({
+            message: "Failed to create patient report",
         });
     }
 }
@@ -50,16 +60,15 @@ async function getPatientRecord(req, res, next) {
                 },
             ],
         });
-        res.status(200).json({
-            msg: "You have successfully fetch all patient reports",
+        return res.status(http_status_1.default.OK).json({
+            msg: "Patient reports fetched successfully",
             count: record.count,
             record: record.rows,
         });
     }
-    catch (err) {
-        res.status(500).json({
-            msg: "Failed to fetch all patient reports",
-            route: "/read",
+    catch (error) {
+        return res.status(500).json({
+            message: "Failed to fetch all patient reports",
         });
     }
 }
@@ -73,33 +82,31 @@ async function getSinglePatientRecord(req, res, next) {
             where: { patientId },
         });
         console.log("after");
-        res
-            .status(200)
-            .json({ msg: "You have successfully find your patient report", record });
+        return res
+            .status(http_status_1.default.OK)
+            .json({ message: "Patient report fetched successfully", record });
     }
-    catch (err) {
-        console.log(err);
-        res.status(500).json({
-            msg: "Failed to read single patient report",
-            route: "/read/:id",
+    catch (error) {
+        console.log(error);
+        res.status(http_status_1.default.INTERNAL_SERVER_ERROR).json({
+            message: "Failed to fetch patient report",
         });
     }
 }
 exports.getSinglePatientRecord = getSinglePatientRecord;
 async function updatePatientRecord(req, res, next) {
-    const id = (0, uuid_1.v4)();
     try {
         const { patientId } = req.params;
         const { patientName, age, hospitalName, weight, height, bloodGroup, genotype, bloodPressure, HIV_status, hepatitis, } = req.body;
         const validateResult = utils_1.updatePatientSchema.validate(req.body, utils_1.options);
         if (validateResult.error) {
             return res
-                .status(400)
+                .status(http_status_1.default.BAD_REQUEST)
                 .json({ Error: validateResult.error.details[0].message });
         }
         const record = await reportModel_1.patientInstance.findOne({ where: { patientId } });
         if (!record) {
-            return res.status(404).json({
+            return res.status(http_status_1.default.NOT_FOUND).json({
                 Error: "Cannot find existing patient report",
             });
         }
@@ -115,15 +122,14 @@ async function updatePatientRecord(req, res, next) {
             HIV_status: HIV_status,
             hepatitis: hepatitis,
         });
-        res.status(202).json({
-            msg: "You have successfully updated your patient report",
+        return res.status(http_status_1.default.OK).json({
+            message: "Patient report successfully updated",
             record: updatedRecord,
         });
     }
-    catch (err) {
-        res.status(500).json({
-            msg: "Failed to update patient report",
-            route: "/update/:id",
+    catch (error) {
+        return res.status(http_status_1.default.INTERNAL_SERVER_ERROR).json({
+            message: "Failed to update patient report",
         });
     }
 }
@@ -133,17 +139,18 @@ async function deletePatientRecord(req, res, next) {
         const { patientId } = req.params;
         const record = await reportModel_1.patientInstance.findOne({ where: { patientId } });
         if (!record) {
-            return res.status(404).json({ msg: "Can not find patient report" });
+            return res
+                .status(http_status_1.default.NOT_FOUND)
+                .json({ message: "Can not find patient report" });
         }
         const deletedRecord = await record.destroy();
         return res
-            .status(200)
-            .json({ msg: "Successfully deleted patient report", deletedRecord });
+            .status(http_status_1.default.OK)
+            .json({ msg: "Patient report deleted successfully" });
     }
     catch (err) {
-        res.status(500).json({
-            msg: "Failed to delete patient report",
-            route: "/delete/:id",
+        return res.status(http_status_1.default.INTERNAL_SERVER_ERROR).json({
+            message: "Failed to delete patient report",
         });
     }
 }

@@ -7,6 +7,7 @@ import {
   updatePatientSchema,
 } from "../utils/utils";
 import { DoctorsInstance } from "../model/doctorModel";
+import httpStatus from "http-status";
 
 export async function PatientRecord(
   req: Request | any,
@@ -21,20 +22,27 @@ export async function PatientRecord(
     const validateResult = createPatientSchema.validate(req.body, options);
     if (validateResult.error) {
       return res
-        .status(400)
+        .status(httpStatus.BAD_REQUEST)
         .json({ Error: validateResult.error.details[0].message });
     }
 
-    let patient = { patientId: id, ...req.body, DoctorId: verified.id };
+    const doctor = DoctorsInstance.findOne({ where: { id: verified.id } });
+    if (!doctor) {
+      return res.status(httpStatus.BAD_REQUEST).json({
+        message: "Doctor not found",
+      });
+    }
+
+    let patient = { patientId: id, ...req.body, doctorId: verified.id };
 
     const record = await patientInstance.create(patient);
-    res
-      .status(201)
-      .json({ msg: "You have successfully created a patient report", record });
-  } catch (err) {
-    res.status(500).json({
-      msg: "Failed to create patient report",
-      route: "/create",
+    return res.status(httpStatus.CREATED).json({
+      message: "Patient report created successfully",
+      record,
+    });
+  } catch (error) {
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+      message: "Failed to create patient report",
     });
   }
 }
@@ -64,15 +72,14 @@ export async function getPatientRecord(
         },
       ],
     });
-    res.status(200).json({
-      msg: "You have successfully fetch all patient reports",
+    return res.status(httpStatus.OK).json({
+      msg: "Patient reports fetched successfully",
       count: record.count,
       record: record.rows,
     });
-  } catch (err) {
-    res.status(500).json({
-      msg: "Failed to fetch all patient reports",
-      route: "/read",
+  } catch (error) {
+    return res.status(500).json({
+      message: "Failed to fetch all patient reports",
     });
   }
 }
@@ -90,14 +97,13 @@ export async function getSinglePatientRecord(
       where: { patientId },
     });
     console.log("after");
-    res
-      .status(200)
-      .json({ msg: "You have successfully find your patient report", record });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({
-      msg: "Failed to read single patient report",
-      route: "/read/:id",
+    return res
+      .status(httpStatus.OK)
+      .json({ message: "Patient report fetched successfully", record });
+  } catch (error) {
+    console.log(error);
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+      message: "Failed to fetch patient report",
     });
   }
 }
@@ -107,7 +113,6 @@ export async function updatePatientRecord(
   res: Response,
   next: NextFunction
 ) {
-  const id = uuidv4();
   try {
     const { patientId } = req.params;
     const {
@@ -125,13 +130,13 @@ export async function updatePatientRecord(
     const validateResult = updatePatientSchema.validate(req.body, options);
     if (validateResult.error) {
       return res
-        .status(400)
+        .status(httpStatus.BAD_REQUEST)
         .json({ Error: validateResult.error.details[0].message });
     }
 
     const record = await patientInstance.findOne({ where: { patientId } });
     if (!record) {
-      return res.status(404).json({
+      return res.status(httpStatus.NOT_FOUND).json({
         Error: "Cannot find existing patient report",
       });
     }
@@ -147,14 +152,13 @@ export async function updatePatientRecord(
       HIV_status: HIV_status,
       hepatitis: hepatitis,
     });
-    res.status(202).json({
-      msg: "You have successfully updated your patient report",
+    return res.status(httpStatus.OK).json({
+      message: "Patient report successfully updated",
       record: updatedRecord,
     });
-  } catch (err) {
-    res.status(500).json({
-      msg: "Failed to update patient report",
-      route: "/update/:id",
+  } catch (error) {
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+      message: "Failed to update patient report",
     });
   }
 }
@@ -168,16 +172,17 @@ export async function deletePatientRecord(
     const { patientId } = req.params;
     const record = await patientInstance.findOne({ where: { patientId } });
     if (!record) {
-      return res.status(404).json({ msg: "Can not find patient report" });
+      return res
+        .status(httpStatus.NOT_FOUND)
+        .json({ message: "Can not find patient report" });
     }
     const deletedRecord = await record.destroy();
     return res
-      .status(200)
-      .json({ msg: "Successfully deleted patient report", deletedRecord });
+      .status(httpStatus.OK)
+      .json({ msg: "Patient report deleted successfully" });
   } catch (err) {
-    res.status(500).json({
-      msg: "Failed to delete patient report",
-      route: "/delete/:id",
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+      message: "Failed to delete patient report",
     });
   }
 }
