@@ -31,7 +31,39 @@ app.use((0, morgan_1.default)("dev"));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
 app.use((0, cookie_parser_1.default)());
-app.use((0, cors_1.default)("*"));
+// app.use(cors("*"));
+app.use((0, cors_1.default)({
+    origin: process.env.CLIENT_APP_URL,
+    methods: ["GET", "HEAD", "OPTIONS", "PUT", "PATCH", "POST", "DELETE"],
+    credentials: true,
+    optionsSuccessStatus: 200,
+    exposedHeaders: [
+        "X-Powered-By",
+        "Access-Control-Allow-Origin",
+        "Vary",
+        "Access-Control-Allow-Credentials",
+        "Set-Cookie",
+        "Content-Type",
+        "Content-Length",
+        "ETag",
+        "Date",
+        "Connection",
+        "Keep-Alive",
+    ],
+    allowedHeaders: [
+        "Cookie",
+        "Cache-Control",
+        "Content-Type",
+        "Content-Length",
+        "Host",
+        "User-Agent",
+        "Accept",
+        "Accept-Encoding",
+        "X-Requested-With",
+        "Connection",
+        "Authorization",
+    ],
+}));
 app.use(express_1.default.static(path_1.default.join(__dirname, "public")));
 // app.use("/", viewsRouter);
 // app.use("/", () => {});
