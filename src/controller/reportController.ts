@@ -107,12 +107,14 @@ export async function getSinglePatientRecord(
   next: NextFunction
 ) {
   try {
-    const { patientId } = req.params;
     const verified = req.headers.token as string;
 
     const token = jwt.verify(verified, jwtsecret) as jwtPayload;
 
     const { id } = token;
+    const patient = await patientInstance.findOne({ where: { doctorId: id } });
+
+    const patientId = patient?.getDataValue("patientId");
 
     const record = await patientInstance.findOne({
       where: { doctorId: id, patientId },
@@ -140,6 +142,10 @@ export async function updatePatientRecord(
 
     const { id } = token;
 
+    const patient = await patientInstance.findOne({ where: { doctorId: id } });
+
+    const patientId = patient?.getDataValue("patientId");
+
     const user = await DoctorsInstance.findOne({ where: { id } });
 
     if (!user) {
@@ -147,7 +153,7 @@ export async function updatePatientRecord(
         .status(httpStatus.NOT_FOUND)
         .json({ message: "Doctor not found" });
     }
-    const { patientId } = req.params;
+    // const { patientId } = req.params;
     const {
       patientName,
       age,
@@ -160,6 +166,7 @@ export async function updatePatientRecord(
       HIV_status,
       hepatitis,
     } = req.body;
+
     const validateResult = updatePatientSchema.validate(req.body, options);
     if (validateResult.error) {
       return res

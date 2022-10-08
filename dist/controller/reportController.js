@@ -82,10 +82,11 @@ async function getPatientRecord(req, res, next) {
 exports.getPatientRecord = getPatientRecord;
 async function getSinglePatientRecord(req, res, next) {
     try {
-        const { patientId } = req.params;
         const verified = req.headers.token;
         const token = jsonwebtoken_1.default.verify(verified, jwtsecret);
         const { id } = token;
+        const patient = await reportModel_1.patientInstance.findOne({ where: { doctorId: id } });
+        const patientId = patient?.getDataValue("patientId");
         const record = await reportModel_1.patientInstance.findOne({
             where: { doctorId: id, patientId },
         });
@@ -106,13 +107,15 @@ async function updatePatientRecord(req, res, next) {
         const verified = req.headers.token;
         const token = jsonwebtoken_1.default.verify(verified, jwtsecret);
         const { id } = token;
+        const patient = await reportModel_1.patientInstance.findOne({ where: { doctorId: id } });
+        const patientId = patient?.getDataValue("patientId");
         const user = await doctorModel_1.DoctorsInstance.findOne({ where: { id } });
         if (!user) {
             return res
                 .status(http_status_1.default.NOT_FOUND)
                 .json({ message: "Doctor not found" });
         }
-        const { patientId } = req.params;
+        // const { patientId } = req.params;
         const { patientName, age, hospitalName, weight, height, bloodGroup, genotype, bloodPressure, HIV_status, hepatitis, } = req.body;
         const validateResult = utils_1.updatePatientSchema.validate(req.body, utils_1.options);
         if (validateResult.error) {
