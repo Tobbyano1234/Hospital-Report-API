@@ -71,7 +71,7 @@ async function getPatientRecord(req, res, next) {
         });
         if (!record) {
             return res
-                .status(http_status_1.default.OK)
+                .status(http_status_1.default.BAD_REQUEST)
                 .json({ message: "You have zero(0) patient report ", record });
         }
         return res.status(http_status_1.default.OK).json({
@@ -89,18 +89,19 @@ async function getPatientRecord(req, res, next) {
 exports.getPatientRecord = getPatientRecord;
 async function getSinglePatientRecord(req, res, next) {
     try {
+        const { patientId } = req.params;
         const verified = req.headers.token;
         const token = jsonwebtoken_1.default.verify(verified, jwtsecret);
         const { id } = token;
         const patient = await reportModel_1.patientInstance.findOne({ where: { doctorId: id } });
-        const patientId = patient?.getDataValue("patientId");
+        // const patientId = patient?.getDataValue("patientId");
         const record = await reportModel_1.patientInstance.findOne({
             where: { doctorId: id, patientId },
         });
         if (!record) {
             return res
-                .status(http_status_1.default.OK)
-                .json({ message: "You have zero(0) patient report ", record });
+                .status(http_status_1.default.BAD_REQUEST)
+                .json({ message: "Patient report not found", record });
         }
         return res
             .status(http_status_1.default.OK)
@@ -116,11 +117,12 @@ async function getSinglePatientRecord(req, res, next) {
 exports.getSinglePatientRecord = getSinglePatientRecord;
 async function updatePatientRecord(req, res, next) {
     try {
+        const { patientId } = req.params;
         const verified = req.headers.token;
         const token = jsonwebtoken_1.default.verify(verified, jwtsecret);
         const { id } = token;
         const patient = await reportModel_1.patientInstance.findOne({ where: { doctorId: id } });
-        const patientId = patient?.getDataValue("patientId");
+        // const patientId = patient?.getDataValue("patientId");
         const user = await doctorModel_1.DoctorsInstance.findOne({ where: { id } });
         if (!user) {
             return res

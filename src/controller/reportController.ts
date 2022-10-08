@@ -93,7 +93,7 @@ export async function getPatientRecord(
 
     if (!record) {
       return res
-        .status(httpStatus.OK)
+        .status(httpStatus.BAD_REQUEST)
         .json({ message: "You have zero(0) patient report ", record });
     }
 
@@ -115,6 +115,7 @@ export async function getSinglePatientRecord(
   next: NextFunction
 ) {
   try {
+    const { patientId } = req.params;
     const verified = req.headers.token as string;
 
     const token = jwt.verify(verified, jwtsecret) as jwtPayload;
@@ -122,7 +123,7 @@ export async function getSinglePatientRecord(
     const { id } = token;
     const patient = await patientInstance.findOne({ where: { doctorId: id } });
 
-    const patientId = patient?.getDataValue("patientId");
+    // const patientId = patient?.getDataValue("patientId");
 
     const record = await patientInstance.findOne({
       where: { doctorId: id, patientId },
@@ -130,8 +131,8 @@ export async function getSinglePatientRecord(
 
     if (!record) {
       return res
-        .status(httpStatus.OK)
-        .json({ message: "You have zero(0) patient report ", record });
+        .status(httpStatus.BAD_REQUEST)
+        .json({ message: "Patient report not found", record });
     }
 
     return res
@@ -151,6 +152,7 @@ export async function updatePatientRecord(
   next: NextFunction
 ) {
   try {
+    const { patientId } = req.params;
     const verified = req.headers.token as string;
     const token = jwt.verify(verified, jwtsecret) as jwtPayload;
 
@@ -158,7 +160,7 @@ export async function updatePatientRecord(
 
     const patient = await patientInstance.findOne({ where: { doctorId: id } });
 
-    const patientId = patient?.getDataValue("patientId");
+    // const patientId = patient?.getDataValue("patientId");
 
     const user = await DoctorsInstance.findOne({ where: { id } });
 
