@@ -47,12 +47,12 @@ async function getPatientRecord(req, res, next) {
         const verified = req.headers.token;
         const token = jsonwebtoken_1.default.verify(verified, jwtsecret);
         const { id } = token;
-        const patient = await reportModel_1.patientInstance.findOne({ where: { doctorId: id } });
-        const patientId = patient?.getDataValue("patientId");
+        // const patient = await patientInstance.findOne({ where: { doctorId: id } });
+        // const patientId = patient?.getDataValue("patientId");
         const limit = req.query?.limit;
         const offset = req.query?.offset;
         const record = await reportModel_1.patientInstance.findAndCountAll({
-            where: { patientId, doctorId: id },
+            where: { doctorId: id },
             limit,
             offset,
             include: [
@@ -72,7 +72,7 @@ async function getPatientRecord(req, res, next) {
         if (!record) {
             return res
                 .status(http_status_1.default.BAD_REQUEST)
-                .json({ message: "You have zero(0) patient report ", record });
+                .json({ message: "Patient reports not found ", record });
         }
         return res.status(http_status_1.default.OK).json({
             msg: "Patient reports fetched successfully",
@@ -81,7 +81,7 @@ async function getPatientRecord(req, res, next) {
         });
     }
     catch (error) {
-        return res.status(500).json({
+        return res.status(http_status_1.default.INTERNAL_SERVER_ERROR).json({
             message: "Failed to fetch all patient reports",
         });
     }
@@ -94,7 +94,6 @@ async function getSinglePatientRecord(req, res, next) {
         const token = jsonwebtoken_1.default.verify(verified, jwtsecret);
         const { id } = token;
         const patient = await reportModel_1.patientInstance.findOne({ where: { doctorId: id } });
-        // const patientId = patient?.getDataValue("patientId");
         const record = await reportModel_1.patientInstance.findOne({
             where: { doctorId: id, patientId },
         });
@@ -122,7 +121,6 @@ async function updatePatientRecord(req, res, next) {
         const token = jsonwebtoken_1.default.verify(verified, jwtsecret);
         const { id } = token;
         const patient = await reportModel_1.patientInstance.findOne({ where: { doctorId: id } });
-        // const patientId = patient?.getDataValue("patientId");
         const user = await doctorModel_1.DoctorsInstance.findOne({ where: { id } });
         if (!user) {
             return res

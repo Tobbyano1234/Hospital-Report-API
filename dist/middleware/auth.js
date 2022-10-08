@@ -22,7 +22,6 @@ async function auth(req, res, next) {
                 .status(http_status_1.default.UNAUTHORIZED)
                 .json({ Error: "Doctor not verify, you can access this route" });
         }
-        // req.user = verified;
         next();
     }
     catch (error) {

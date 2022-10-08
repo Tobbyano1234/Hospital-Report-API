@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.post("/create", auth, PatientRecord);
 router.get("/allrecords", auth, getPatientRecord);
-router.get("/getrecord/:patiendId", auth, getSinglePatientRecord);
+router.get("/getrecord/:patientId", auth, getSinglePatientRecord);
 router.patch("/update/:patientId", auth, updatePatientRecord);
 router.delete("/delete/:patientId", auth, deletePatientRecord);
 

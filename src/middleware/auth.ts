@@ -26,7 +26,6 @@ export async function auth(
         .json({ Error: "Doctor not verify, you can access this route" });
     }
 
-    // req.user = verified;
     next();
   } catch (error) {
     return res

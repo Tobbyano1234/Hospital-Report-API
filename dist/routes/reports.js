@@ -9,7 +9,7 @@ const auth_1 = require("../middleware/auth");
 const router = express_1.default.Router();
 router.post("/create", auth_1.auth, reportController_1.PatientRecord);
 router.get("/allrecords", auth_1.auth, reportController_1.getPatientRecord);
-router.get("/getrecord/:patiendId", auth_1.auth, reportController_1.getSinglePatientRecord);
+router.get("/getrecord/:patientId", auth_1.auth, reportController_1.getSinglePatientRecord);
 router.patch("/update/:patientId", auth_1.auth, reportController_1.updatePatientRecord);
 router.delete("/delete/:patientId", auth_1.auth, reportController_1.deletePatientRecord);
 exports.default = router;

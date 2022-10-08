@@ -66,14 +66,14 @@ export async function getPatientRecord(
 
     const { id } = token;
 
-    const patient = await patientInstance.findOne({ where: { doctorId: id } });
+    // const patient = await patientInstance.findOne({ where: { doctorId: id } });
 
-    const patientId = patient?.getDataValue("patientId");
+    // const patientId = patient?.getDataValue("patientId");
 
     const limit = req.query?.limit as number | undefined;
     const offset = req.query?.offset as number | undefined;
     const record = await patientInstance.findAndCountAll({
-      where: { patientId, doctorId: id },
+      where: { doctorId: id },
       limit,
       offset,
       include: [
@@ -94,7 +94,7 @@ export async function getPatientRecord(
     if (!record) {
       return res
         .status(httpStatus.BAD_REQUEST)
-        .json({ message: "You have zero(0) patient report ", record });
+        .json({ message: "Patient reports not found ", record });
     }
 
     return res.status(httpStatus.OK).json({
@@ -103,7 +103,7 @@ export async function getPatientRecord(
       record: record.rows,
     });
   } catch (error) {
-    return res.status(500).json({
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
       message: "Failed to fetch all patient reports",
     });
   }
@@ -122,8 +122,6 @@ export async function getSinglePatientRecord(
 
     const { id } = token;
     const patient = await patientInstance.findOne({ where: { doctorId: id } });
-
-    // const patientId = patient?.getDataValue("patientId");
 
     const record = await patientInstance.findOne({
       where: { doctorId: id, patientId },
@@ -159,8 +157,6 @@ export async function updatePatientRecord(
     const { id } = token;
 
     const patient = await patientInstance.findOne({ where: { doctorId: id } });
-
-    // const patientId = patient?.getDataValue("patientId");
 
     const user = await DoctorsInstance.findOne({ where: { id } });
 
