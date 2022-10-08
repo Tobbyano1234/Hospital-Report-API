@@ -11,7 +11,7 @@ import { auth } from "../middleware/auth";
 const router = express.Router();
 
 router.post("/create", auth, PatientRecord);
-router.get("/read", getPatientRecord);
+router.get("/read",auth, getPatientRecord);
 router.get("/read/:patientId", auth, getSinglePatientRecord);
 router.patch("/update/:patientId", auth, updatePatientRecord);
 router.delete("/delete/:patientId", auth, deletePatientRecord);

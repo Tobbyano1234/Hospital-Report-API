@@ -61,7 +61,6 @@ async function RegisterDoctor(req, res, next) {
 }
 exports.RegisterDoctor = RegisterDoctor;
 async function LoginDoctor(req, res, next) {
-    // const doctorId = UUID4();
     try {
         const validateResult = utils_1.loginSchema.validate(req.body, utils_1.options);
         if (validateResult.error) {

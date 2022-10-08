@@ -11,7 +11,6 @@ const http_status_1 = __importDefault(require("http-status"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const jwtsecret = process.env.JWT_SECRET;
 async function PatientRecord(req, res, next) {
-    // const id = uuidv4();
     try {
         const token = req.headers.token;
         const { id } = jsonwebtoken_1.default.verify(token, jwtsecret);
@@ -104,6 +103,15 @@ async function getSinglePatientRecord(req, res, next) {
 exports.getSinglePatientRecord = getSinglePatientRecord;
 async function updatePatientRecord(req, res, next) {
     try {
+        const verified = req.headers.token;
+        const token = jsonwebtoken_1.default.verify(verified, jwtsecret);
+        const { id } = token;
+        const user = await doctorModel_1.DoctorsInstance.findOne({ where: { id } });
+        if (!user) {
+            return res
+                .status(http_status_1.default.NOT_FOUND)
+                .json({ message: "Doctor not found" });
+        }
         const { patientId } = req.params;
         const { patientName, age, hospitalName, weight, height, bloodGroup, genotype, bloodPressure, HIV_status, hepatitis, } = req.body;
         const validateResult = utils_1.updatePatientSchema.validate(req.body, utils_1.options);
@@ -112,7 +120,9 @@ async function updatePatientRecord(req, res, next) {
                 .status(http_status_1.default.BAD_REQUEST)
                 .json({ Error: validateResult.error.details[0].message });
         }
-        const record = await reportModel_1.patientInstance.findOne({ where: { patientId } });
+        const record = await reportModel_1.patientInstance.findOne({
+            where: { doctorId: id, patientId },
+        });
         if (!record) {
             return res.status(http_status_1.default.NOT_FOUND).json({
                 Error: "Cannot find existing patient report",

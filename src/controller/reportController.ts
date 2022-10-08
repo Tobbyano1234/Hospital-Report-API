@@ -10,18 +10,20 @@ import { DoctorsInstance } from "../model/doctorModel";
 import httpStatus from "http-status";
 import jwt from "jsonwebtoken";
 
-const jwtsecret = process.env.JWT_SECRET;
+const jwtsecret = process.env.JWT_SECRET as string;
+
+interface jwtPayload {
+  id: string;
+}
 
 export async function PatientRecord(
   req: Request | any,
   res: Response,
   next: NextFunction
 ) {
-  // const id = uuidv4();
-
   try {
     const token = req.headers.token as string;
-    const { id } = jwt.verify(token, jwtsecret);
+    const { id } = jwt.verify(token, jwtsecret) as jwtPayload;
 
     const validateResult = createPatientSchema.validate(req.body, options);
     if (validateResult.error) {
@@ -57,9 +59,9 @@ export async function getPatientRecord(
   next: NextFunction
 ) {
   try {
-    const verified = req.headers.token;
+    const verified = req.headers.token as string;
 
-    const token = jwt.verify(verified, jwtsecret);
+    const token = jwt.verify(verified, jwtsecret) as jwtPayload;
 
     const { id } = token;
 
@@ -106,9 +108,9 @@ export async function getSinglePatientRecord(
 ) {
   try {
     const { patientId } = req.params;
-    const verified = req.headers.token;
+    const verified = req.headers.token as string;
 
-    const token = jwt.verify(verified, jwtsecret);
+    const token = jwt.verify(verified, jwtsecret) as jwtPayload;
 
     const { id } = token;
 
@@ -133,6 +135,18 @@ export async function updatePatientRecord(
   next: NextFunction
 ) {
   try {
+    const verified = req.headers.token as string;
+    const token = jwt.verify(verified, jwtsecret) as jwtPayload;
+
+    const { id } = token;
+
+    const user = await DoctorsInstance.findOne({ where: { id } });
+
+    if (!user) {
+      return res
+        .status(httpStatus.NOT_FOUND)
+        .json({ message: "Doctor not found" });
+    }
     const { patientId } = req.params;
     const {
       patientName,
@@ -153,7 +167,9 @@ export async function updatePatientRecord(
         .json({ Error: validateResult.error.details[0].message });
     }
 
-    const record = await patientInstance.findOne({ where: { patientId } });
+    const record = await patientInstance.findOne({
+      where: { doctorId: id, patientId },
+    });
     if (!record) {
       return res.status(httpStatus.NOT_FOUND).json({
         Error: "Cannot find existing patient report",

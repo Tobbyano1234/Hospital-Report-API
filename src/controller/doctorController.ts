@@ -12,10 +12,9 @@ import { patientInstance } from "../model/reportModel";
 import httpStatus from "http-status";
 import jwt from "jsonwebtoken";
 
-const jwtsecret = process.env.JWT_SECRET;
+const jwtsecret = process.env.JWT_SECRET as string;
 
 interface jwtPayload {
-  email: string;
   id: string;
 }
 
@@ -85,8 +84,6 @@ export async function LoginDoctor(
   res: Response,
   next: NextFunction
 ) {
-  // const doctorId = UUID4();
-
   try {
     const validateResult = loginSchema.validate(req.body, options);
     if (validateResult.error) {
@@ -136,9 +133,9 @@ export async function getDoctor(
   next: NextFunction
 ) {
   try {
-    const verified = req.headers.token;
+    const verified = req.headers.token as string;
 
-    const token = jwt.verify(verified, jwtsecret) as unknown | jwtPayload;
+    const token = jwt.verify(verified, jwtsecret) as jwtPayload;
 
     const { id } = token as jwtPayload;
 
