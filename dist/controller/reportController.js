@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deletePatientRecord = exports.updatePatientRecord = exports.getSinglePatientRecord = exports.getPatientRecord = exports.PatientRecord = void 0;
+const uuid_1 = require("uuid");
 const reportModel_1 = require("../model/reportModel");
 const utils_1 = require("../utils/utils");
 const doctorModel_1 = require("../model/doctorModel");
@@ -12,6 +13,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const jwtsecret = process.env.JWT_SECRET;
 async function PatientRecord(req, res, next) {
     try {
+        const patientId = (0, uuid_1.v4)();
         const token = req.headers.token;
         const { id } = jsonwebtoken_1.default.verify(token, jwtsecret);
         const validateResult = utils_1.createPatientSchema.validate(req.body, utils_1.options);
@@ -26,7 +28,7 @@ async function PatientRecord(req, res, next) {
                 message: "Doctor not found",
             });
         }
-        let patient = { patientId: id, ...req.body, doctorId: id };
+        let patient = { patientId, ...req.body, doctorId: id };
         const record = await reportModel_1.patientInstance.create(patient);
         return res.status(http_status_1.default.CREATED).json({
             message: "Patient report created successfully",
@@ -67,6 +69,11 @@ async function getPatientRecord(req, res, next) {
                 },
             ],
         });
+        if (!record) {
+            return res
+                .status(http_status_1.default.OK)
+                .json({ message: "You have zero(0) patient report ", record });
+        }
         return res.status(http_status_1.default.OK).json({
             msg: "Patient reports fetched successfully",
             count: record.count,
@@ -90,6 +97,11 @@ async function getSinglePatientRecord(req, res, next) {
         const record = await reportModel_1.patientInstance.findOne({
             where: { doctorId: id, patientId },
         });
+        if (!record) {
+            return res
+                .status(http_status_1.default.OK)
+                .json({ message: "You have zero(0) patient report ", record });
+        }
         return res
             .status(http_status_1.default.OK)
             .json({ message: "Patient report fetched successfully", record });
@@ -115,7 +127,6 @@ async function updatePatientRecord(req, res, next) {
                 .status(http_status_1.default.NOT_FOUND)
                 .json({ message: "Doctor not found" });
         }
-        // const { patientId } = req.params;
         const { patientName, age, hospitalName, weight, height, bloodGroup, genotype, bloodPressure, HIV_status, hepatitis, } = req.body;
         const validateResult = utils_1.updatePatientSchema.validate(req.body, utils_1.options);
         if (validateResult.error) {

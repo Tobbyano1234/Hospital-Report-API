@@ -22,6 +22,7 @@ export async function PatientRecord(
   next: NextFunction
 ) {
   try {
+    const patientId = uuidv4();
     const token = req.headers.token as string;
     const { id } = jwt.verify(token, jwtsecret) as jwtPayload;
 
@@ -39,7 +40,7 @@ export async function PatientRecord(
       });
     }
 
-    let patient = { patientId: id, ...req.body, doctorId: id };
+    let patient = { patientId, ...req.body, doctorId: id };
 
     const record = await patientInstance.create(patient);
     return res.status(httpStatus.CREATED).json({
@@ -89,6 +90,13 @@ export async function getPatientRecord(
         },
       ],
     });
+
+    if (!record) {
+      return res
+        .status(httpStatus.OK)
+        .json({ message: "You have zero(0) patient report ", record });
+    }
+
     return res.status(httpStatus.OK).json({
       msg: "Patient reports fetched successfully",
       count: record.count,
@@ -119,6 +127,12 @@ export async function getSinglePatientRecord(
     const record = await patientInstance.findOne({
       where: { doctorId: id, patientId },
     });
+
+    if (!record) {
+      return res
+        .status(httpStatus.OK)
+        .json({ message: "You have zero(0) patient report ", record });
+    }
 
     return res
       .status(httpStatus.OK)
@@ -153,7 +167,7 @@ export async function updatePatientRecord(
         .status(httpStatus.NOT_FOUND)
         .json({ message: "Doctor not found" });
     }
-    // const { patientId } = req.params;
+
     const {
       patientName,
       age,
