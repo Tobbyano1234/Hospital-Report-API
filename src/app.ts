@@ -13,7 +13,7 @@ db.sync()
   })
   .catch((err) => console.log(err));
 
-// import viewsRouter from "./routes/views";
+import indexRouter from "./routes/indexRoute";
 import doctorRouter from "./routes/doctors";
 import reportRouter from "./routes/reports";
 
@@ -71,7 +71,7 @@ app.use(
 app.use(express.static(path.join(__dirname, "public")));
 
 // app.use("/", viewsRouter);
-// app.use("/", () => {});
+app.use("/", indexRouter);
 app.use("/api-v1/doctors", doctorRouter);
 app.use("/api-v1/patients", reportRouter);
 

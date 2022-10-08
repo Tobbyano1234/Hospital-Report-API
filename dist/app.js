@@ -16,7 +16,7 @@ database_config_1.default.sync()
     console.log(`Database connected successfully`);
 })
     .catch((err) => console.log(err));
-// import viewsRouter from "./routes/views";
+const indexRoute_1 = __importDefault(require("./routes/indexRoute"));
 const doctors_1 = __importDefault(require("./routes/doctors"));
 const reports_1 = __importDefault(require("./routes/reports"));
 const app = (0, express_1.default)();
@@ -66,7 +66,7 @@ app.use((0, cors_1.default)({
 }));
 app.use(express_1.default.static(path_1.default.join(__dirname, "public")));
 // app.use("/", viewsRouter);
-// app.use("/", () => {});
+app.use("/", indexRoute_1.default);
 app.use("/api-v1/doctors", doctors_1.default);
 app.use("/api-v1/patients", reports_1.default);
 // catch 404 and forward to error handler
