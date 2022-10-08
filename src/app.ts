@@ -38,8 +38,8 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // app.use("/", viewsRouter);
 // app.use("/", () => {});
-app.use("/doctors", doctorRouter);
-app.use("/patients", reportRouter);
+app.use("/api-v1/doctors", doctorRouter);
+app.use("/api-v1/patients", reportRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req: Request, res: Response, next: NextFunction) {
