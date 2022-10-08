@@ -9,5 +9,6 @@ const auth_1 = require("../middleware/auth");
 const router = express_1.default.Router();
 router.post("/register", doctorController_1.RegisterDoctor);
 router.post("/login", doctorController_1.LoginDoctor);
-router.get("/alldoctors", auth_1.auth, doctorController_1.getDoctor);
+router.get("/alldoctors", auth_1.auth, doctorController_1.getAllDoctor);
+router.get("/getdoctor", auth_1.auth, doctorController_1.getDoctor);
 exports.default = router;

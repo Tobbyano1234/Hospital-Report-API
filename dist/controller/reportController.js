@@ -4,28 +4,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deletePatientRecord = exports.updatePatientRecord = exports.getSinglePatientRecord = exports.getPatientRecord = exports.PatientRecord = void 0;
-const uuid_1 = require("uuid");
 const reportModel_1 = require("../model/reportModel");
 const utils_1 = require("../utils/utils");
 const doctorModel_1 = require("../model/doctorModel");
 const http_status_1 = __importDefault(require("http-status"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const jwtsecret = process.env.JWT_SECRET;
 async function PatientRecord(req, res, next) {
-    const id = (0, uuid_1.v4)();
+    // const id = uuidv4();
     try {
-        const verified = req.user;
+        const token = req.headers.token;
+        const { id } = jsonwebtoken_1.default.verify(token, jwtsecret);
         const validateResult = utils_1.createPatientSchema.validate(req.body, utils_1.options);
         if (validateResult.error) {
             return res
                 .status(http_status_1.default.BAD_REQUEST)
                 .json({ Error: validateResult.error.details[0].message });
         }
-        const doctor = doctorModel_1.DoctorsInstance.findOne({ where: { id: verified.id } });
+        const doctor = doctorModel_1.DoctorsInstance.findOne({ where: { id } });
         if (!doctor) {
             return res.status(http_status_1.default.BAD_REQUEST).json({
                 message: "Doctor not found",
             });
         }
-        let patient = { patientId: id, ...req.body, doctorId: verified.id };
+        let patient = { patientId: id, ...req.body, doctorId: id };
         const record = await reportModel_1.patientInstance.create(patient);
         return res.status(http_status_1.default.CREATED).json({
             message: "Patient report created successfully",
@@ -41,9 +43,15 @@ async function PatientRecord(req, res, next) {
 exports.PatientRecord = PatientRecord;
 async function getPatientRecord(req, res, next) {
     try {
+        const verified = req.headers.token;
+        const token = jsonwebtoken_1.default.verify(verified, jwtsecret);
+        const { id } = token;
+        const patient = await reportModel_1.patientInstance.findOne({ where: { doctorId: id } });
+        const patientId = patient?.getDataValue("patientId");
         const limit = req.query?.limit;
         const offset = req.query?.offset;
         const record = await reportModel_1.patientInstance.findAndCountAll({
+            where: { patientId, doctorId: id },
             limit,
             offset,
             include: [
@@ -76,8 +84,11 @@ exports.getPatientRecord = getPatientRecord;
 async function getSinglePatientRecord(req, res, next) {
     try {
         const { patientId } = req.params;
+        const verified = req.headers.token;
+        const token = jsonwebtoken_1.default.verify(verified, jwtsecret);
+        const { id } = token;
         const record = await reportModel_1.patientInstance.findOne({
-            where: { patientId },
+            where: { doctorId: id, patientId },
         });
         return res
             .status(http_status_1.default.OK)

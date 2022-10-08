@@ -10,6 +10,14 @@ import {
 import bcrypt from "bcryptjs";
 import { patientInstance } from "../model/reportModel";
 import httpStatus from "http-status";
+import jwt from "jsonwebtoken";
+
+const jwtsecret = process.env.JWT_SECRET;
+
+interface jwtPayload {
+  email: string;
+  id: string;
+}
 
 export async function RegisterDoctor(
   req: Request,
@@ -123,6 +131,38 @@ export async function LoginDoctor(
 }
 
 export async function getDoctor(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const verified = req.headers.token;
+
+    const token = jwt.verify(verified, jwtsecret) as unknown | jwtPayload;
+
+    const { id } = token as jwtPayload;
+
+    const record = await DoctorsInstance.findOne({
+      where: { id },
+      include: [{ model: patientInstance, as: "Patient Report" }],
+    });
+    if (!record) {
+      return res.status(httpStatus.NOT_FOUND).json({
+        message: "Doctor does not exist",
+      });
+    }
+
+    return res.status(httpStatus.OK).json({
+      message: "Doctor's details fetched successfully",
+      record,
+    });
+  } catch (error) {
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+      message: "Failed to fetch doctor profiles",
+    });
+  }
+}
+export async function getAllDoctor(
   req: Request,
   res: Response,
   next: NextFunction

@@ -8,16 +8,20 @@ import {
 } from "../utils/utils";
 import { DoctorsInstance } from "../model/doctorModel";
 import httpStatus from "http-status";
+import jwt from "jsonwebtoken";
+
+const jwtsecret = process.env.JWT_SECRET;
 
 export async function PatientRecord(
   req: Request | any,
   res: Response,
   next: NextFunction
 ) {
-  const id = uuidv4();
+  // const id = uuidv4();
 
   try {
-    const verified = req.user;
+    const token = req.headers.token as string;
+    const { id } = jwt.verify(token, jwtsecret);
 
     const validateResult = createPatientSchema.validate(req.body, options);
     if (validateResult.error) {
@@ -26,14 +30,14 @@ export async function PatientRecord(
         .json({ Error: validateResult.error.details[0].message });
     }
 
-    const doctor = DoctorsInstance.findOne({ where: { id: verified.id } });
+    const doctor = DoctorsInstance.findOne({ where: { id } });
     if (!doctor) {
       return res.status(httpStatus.BAD_REQUEST).json({
         message: "Doctor not found",
       });
     }
 
-    let patient = { patientId: id, ...req.body, doctorId: verified.id };
+    let patient = { patientId: id, ...req.body, doctorId: id };
 
     const record = await patientInstance.create(patient);
     return res.status(httpStatus.CREATED).json({
@@ -53,9 +57,20 @@ export async function getPatientRecord(
   next: NextFunction
 ) {
   try {
+    const verified = req.headers.token;
+
+    const token = jwt.verify(verified, jwtsecret);
+
+    const { id } = token;
+
+    const patient = await patientInstance.findOne({ where: { doctorId: id } });
+
+    const patientId = patient?.getDataValue("patientId");
+
     const limit = req.query?.limit as number | undefined;
     const offset = req.query?.offset as number | undefined;
     const record = await patientInstance.findAndCountAll({
+      where: { patientId, doctorId: id },
       limit,
       offset,
       include: [
@@ -91,9 +106,14 @@ export async function getSinglePatientRecord(
 ) {
   try {
     const { patientId } = req.params;
+    const verified = req.headers.token;
+
+    const token = jwt.verify(verified, jwtsecret);
+
+    const { id } = token;
 
     const record = await patientInstance.findOne({
-      where: { patientId },
+      where: { doctorId: id, patientId },
     });
 
     return res

@@ -3,13 +3,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDoctor = exports.LoginDoctor = exports.RegisterDoctor = void 0;
+exports.getAllDoctor = exports.getDoctor = exports.LoginDoctor = exports.RegisterDoctor = void 0;
 const uuid_1 = require("uuid");
 const doctorModel_1 = require("../model/doctorModel");
 const utils_1 = require("../utils/utils");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const reportModel_1 = require("../model/reportModel");
 const http_status_1 = __importDefault(require("http-status"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const jwtsecret = process.env.JWT_SECRET;
 async function RegisterDoctor(req, res, next) {
     const doctorId = (0, uuid_1.v4)();
     try {
@@ -99,6 +101,32 @@ async function LoginDoctor(req, res, next) {
 exports.LoginDoctor = LoginDoctor;
 async function getDoctor(req, res, next) {
     try {
+        const verified = req.headers.token;
+        const token = jsonwebtoken_1.default.verify(verified, jwtsecret);
+        const { id } = token;
+        const record = await doctorModel_1.DoctorsInstance.findOne({
+            where: { id },
+            include: [{ model: reportModel_1.patientInstance, as: "Patient Report" }],
+        });
+        if (!record) {
+            return res.status(http_status_1.default.NOT_FOUND).json({
+                message: "Doctor does not exist",
+            });
+        }
+        return res.status(http_status_1.default.OK).json({
+            message: "Doctor's details fetched successfully",
+            record,
+        });
+    }
+    catch (error) {
+        return res.status(http_status_1.default.INTERNAL_SERVER_ERROR).json({
+            message: "Failed to fetch doctor profiles",
+        });
+    }
+}
+exports.getDoctor = getDoctor;
+async function getAllDoctor(req, res, next) {
+    try {
         const limit = req.query?.limit;
         const offset = req.query?.offset;
         const record = await doctorModel_1.DoctorsInstance.findAndCountAll({
@@ -118,4 +146,4 @@ async function getDoctor(req, res, next) {
         });
     }
 }
-exports.getDoctor = getDoctor;
+exports.getAllDoctor = getAllDoctor;
