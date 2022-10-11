@@ -1,0 +1,1637 @@
+openapi: 3.0.0
+info:
+  title: Hospital Report Application
+  description: It keeps track of patient medical report for easy access for doctor
+  contact: {}
+  version: "1.0"
+servers:
+  - url: https://hospitalreport.herokuapp.com/api-v1
+    variables: {}
+paths:
+  /doctors/alldoctors:
+    get:
+      tags:
+        - Doctor
+      summary: Get all doctor
+      operationId: Getalldoctor
+      parameters: []
+      responses:
+        "200":
+          description: OK
+          headers:
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Cowboy
+            Connection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: keep-alive
+            X-Powered-By:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Express
+            Content-Length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: "796"
+            Etag:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: W/"31c-UWlqP4XNGD0OSO9CNP2/+s8FejE"
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Sat, 08 Oct 2022 02:21:33 GMT
+            Via:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1.1 vegur
+          content:
+            application/json; charset=utf-8:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Getalldoctor"
+                  - example:
+                      message: Doctors profiles fetched successfully
+                      count: 1
+                      record:
+                        - id: 7c707390-cdb0-4530-8a81-8028fb56a125
+                          DoctorsName: Joe Jones
+                          email: jones@examples.com
+                          specialization: Surgeon
+                          gender: male
+                          phoneNumber: 9089647112
+                          password: $2a$08$7qkonNNOnKCMT4FxrDM5reP6MftISRVxW/VYfp/dYGtmyghdmictO
+                          createdAt: 2022-10-08T02:17:20.611Z
+                          updatedAt: 2022-10-08T02:17:20.611Z
+                          Patient Report:
+                            - patientId: 7c707390-cdb0-4530-8a81-8028fb56a125
+                              doctorId: 7c707390-cdb0-4530-8a81-8028fb56a125
+                              patientName: Sherry Doe
+                              age: 35
+                              hospitalName: St Hannah
+                              weight: 52kg
+                              height: 1.9m
+                              bloodGroup: O+
+                              genotype: AA
+                              bloodPressure: Positive
+                              HIV_status: Negative
+                              hepatitis: Negative
+                              createdAt: 2022-10-08T02:18:02.756Z
+                              updatedAt: 2022-10-08T02:18:02.756Z
+              example:
+                message: Doctors profiles fetched successfully
+                count: 1
+                record:
+                  - id: 7c707390-cdb0-4530-8a81-8028fb56a125
+                    DoctorsName: Joe Jones
+                    email: jones@examples.com
+                    specialization: Surgeon
+                    gender: male
+                    phoneNumber: 9089647112
+                    password: $2a$08$7qkonNNOnKCMT4FxrDM5reP6MftISRVxW/VYfp/dYGtmyghdmictO
+                    createdAt: 2022-10-08T02:17:20.611Z
+                    updatedAt: 2022-10-08T02:17:20.611Z
+                    Patient Report:
+                      - patientId: 7c707390-cdb0-4530-8a81-8028fb56a125
+                        doctorId: 7c707390-cdb0-4530-8a81-8028fb56a125
+                        patientName: Sherry Doe
+                        age: 35
+                        hospitalName: St Hannah
+                        weight: 52kg
+                        height: 1.9m
+                        bloodGroup: O+
+                        genotype: AA
+                        bloodPressure: Positive
+                        HIV_status: Negative
+                        hepatitis: Negative
+                        createdAt: 2022-10-08T02:18:02.756Z
+                        updatedAt: 2022-10-08T02:18:02.756Z
+      deprecated: false
+  /doctors/register:
+    post:
+      tags:
+        - Doctor
+      summary: Register doctor
+      operationId: Registerdoctor
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/RegisterdoctorRequest"
+                - example:
+                    DoctorsName: Joe Jones
+                    email: jones@examples.com
+                    specialization: Surgeon
+                    gender: male
+                    phoneNumber: "09089647112"
+                    password: "12345"
+                    confirm_password: "12345"
+            example:
+              DoctorsName: Joe Jones
+              email: jones@examples.com
+              specialization: Surgeon
+              gender: male
+              phoneNumber: "09089647112"
+              password: "12345"
+              confirm_password: "12345"
+        required: true
+      responses:
+        "201":
+          description: Created
+          headers:
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Cowboy
+            Connection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: keep-alive
+            X-Powered-By:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Express
+            Content-Length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: "383"
+            Etag:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: W/"17f-PLn+dMiXuWCKTLWp63L58np+WnU"
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Sat, 08 Oct 2022 01:19:21 GMT
+            Via:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1.1 vegur
+          content:
+            application/json; charset=utf-8:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Registerdoctor"
+                  - example:
+                      message: You have successfully created a user
+                      record:
+                        id: e8c03861-e60c-4fde-8b4f-0b6aaace1ca7
+                        DoctorsName: Joe Jones
+                        email: jones@examples.com
+                        specialization: Surgeon
+                        gender: male
+                        phoneNumber: "09089647112"
+                        password: $2a$08$7pgd6pqYoFye4ZJD.cf5ue0B.g6GFqhdGMzYet6k8oGo.Oc6nfJ0K
+                        updatedAt: 2022-10-08T01:19:21.985Z
+                        createdAt: 2022-10-08T01:19:21.985Z
+              example:
+                message: You have successfully created a user
+                record:
+                  id: e8c03861-e60c-4fde-8b4f-0b6aaace1ca7
+                  DoctorsName: Joe Jones
+                  email: jones@examples.com
+                  specialization: Surgeon
+                  gender: male
+                  phoneNumber: "09089647112"
+                  password: $2a$08$7pgd6pqYoFye4ZJD.cf5ue0B.g6GFqhdGMzYet6k8oGo.Oc6nfJ0K
+                  updatedAt: 2022-10-08T01:19:21.985Z
+                  createdAt: 2022-10-08T01:19:21.985Z
+      deprecated: false
+      security: []
+  /doctors/login:
+    post:
+      tags:
+        - Doctor
+      summary: Login Doctor
+      operationId: LoginDoctor
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/LoginDoctorRequest"
+                - example:
+                    email: jones@examples.com
+                    password: "12345"
+            example:
+              email: jones@examples.com
+              password: "12345"
+        required: true
+      responses:
+        "200":
+          description: OK
+          headers:
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Cowboy
+            Connection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: keep-alive
+            X-Powered-By:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Express
+            Content-Length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: "560"
+            Etag:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: W/"230-VN0ZJoo4jdoeMOP60eFK+gb4/Ik"
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Sat, 08 Oct 2022 01:20:17 GMT
+            Via:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1.1 vegur
+          content:
+            application/json; charset=utf-8:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/LoginDoctor"
+                  - example:
+                      message: Login Successfully
+                      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU4YzAzODYxLWU2MGMtNGZkZS04YjRmLTBiNmFhYWNlMWNhNyIsImlhdCI6MTY2NTE5MjAxNywiZXhwIjoxNjY1Nzk2ODE3fQ.ecTu4yAULeCqTtfVfbeX7uXqy4yjK7pVQkcooW1I-vs
+                      doctor:
+                        id: e8c03861-e60c-4fde-8b4f-0b6aaace1ca7
+                        DoctorsName: Joe Jones
+                        email: jones@examples.com
+                        specialization: Surgeon
+                        gender: male
+                        phoneNumber: 9089647112
+                        password: $2a$08$7pgd6pqYoFye4ZJD.cf5ue0B.g6GFqhdGMzYet6k8oGo.Oc6nfJ0K
+                        createdAt: 2022-10-08T01:19:21.985Z
+                        updatedAt: 2022-10-08T01:19:21.985Z
+              example:
+                message: Login Successfully
+                token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU4YzAzODYxLWU2MGMtNGZkZS04YjRmLTBiNmFhYWNlMWNhNyIsImlhdCI6MTY2NTE5MjAxNywiZXhwIjoxNjY1Nzk2ODE3fQ.ecTu4yAULeCqTtfVfbeX7uXqy4yjK7pVQkcooW1I-vs
+                doctor:
+                  id: e8c03861-e60c-4fde-8b4f-0b6aaace1ca7
+                  DoctorsName: Joe Jones
+                  email: jones@examples.com
+                  specialization: Surgeon
+                  gender: male
+                  phoneNumber: 9089647112
+                  password: $2a$08$7pgd6pqYoFye4ZJD.cf5ue0B.g6GFqhdGMzYet6k8oGo.Oc6nfJ0K
+                  createdAt: 2022-10-08T01:19:21.985Z
+                  updatedAt: 2022-10-08T01:19:21.985Z
+      deprecated: false
+      security: []
+  /patients/read:
+    get:
+      tags:
+        - Patient
+      summary: Get all patient
+      operationId: Getallpatient
+      parameters: []
+      responses:
+        "200":
+          description: OK
+          headers:
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Cowboy
+            Connection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: keep-alive
+            X-Powered-By:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Express
+            Content-Length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: "614"
+            Etag:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: W/"266-tfaaYlfd0mz05mzOD6eXIptYTZ0"
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Sat, 08 Oct 2022 03:00:00 GMT
+            Via:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1.1 vegur
+          content:
+            application/json; charset=utf-8:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Getallpatient"
+                  - example:
+                      msg: Patient reports fetched successfully
+                      count: 1
+                      record:
+                        - patientId: 6143e57d-b8d1-463a-ba2b-224f018feb3e
+                          doctorId: fce85319-d13e-41a3-b178-5277457e7120
+                          patientName: Tammy Jones
+                          age: 35
+                          hospitalName: St Babra
+                          weight: 46kg
+                          height: 1.5m
+                          bloodGroup: O+
+                          genotype: AS
+                          bloodPressure: Negative
+                          HIV_status: Negative
+                          hepatitis: Positive
+                          createdAt: 2022-10-08T02:57:49.090Z
+                          updatedAt: 2022-10-08T02:57:49.090Z
+                          Doctors:
+                            id: fce85319-d13e-41a3-b178-5277457e7120
+                            DoctorsName: Joe Jones
+                            email: jones@examples.com
+                            specialization: Surgeon
+                            phoneNumber: 9089647112
+              example:
+                msg: Patient reports fetched successfully
+                count: 1
+                record:
+                  - patientId: 6143e57d-b8d1-463a-ba2b-224f018feb3e
+                    doctorId: fce85319-d13e-41a3-b178-5277457e7120
+                    patientName: Tammy Jones
+                    age: 35
+                    hospitalName: St Babra
+                    weight: 46kg
+                    height: 1.5m
+                    bloodGroup: O+
+                    genotype: AS
+                    bloodPressure: Negative
+                    HIV_status: Negative
+                    hepatitis: Positive
+                    createdAt: 2022-10-08T02:57:49.090Z
+                    updatedAt: 2022-10-08T02:57:49.090Z
+                    Doctors:
+                      id: fce85319-d13e-41a3-b178-5277457e7120
+                      DoctorsName: Joe Jones
+                      email: jones@examples.com
+                      specialization: Surgeon
+                      phoneNumber: 9089647112
+      deprecated: false
+      security: []
+  /patients/read/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The user ID
+    get:
+      tags:
+        - Patient
+      summary: Get single patient
+      operationId: Getsinglepatient
+      parameters: []
+      responses:
+        "200":
+          description: OK
+          headers:
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Cowboy
+            Connection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: keep-alive
+            X-Powered-By:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Express
+            Content-Length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: "444"
+            Etag:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: W/"1bc-amVwEjj1syLUzeX6dVV2MoW/62g"
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Sat, 08 Oct 2022 03:40:41 GMT
+            Via:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1.1 vegur
+          content:
+            application/json; charset=utf-8:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Getsinglepatient"
+                  - example:
+                      message: Patient report fetched successfully
+                      record:
+                        patientId: c14239c5-276a-41af-a1cf-f9ff15d13687
+                        doctorId: 7bc44e26-0485-4db3-bf56-a974e24e075a
+                        patientName: Micheal Giggs
+                        age: 58
+                        hospitalName: St Babra
+                        weight: 69kg
+                        height: 1.9m
+                        bloodGroup: O+
+                        genotype: SS
+                        bloodPressure: Negative
+                        HIV_status: Positive
+                        hepatitis: Negative
+                        createdAt: 2022-10-08T03:36:48.024Z
+                        updatedAt: 2022-10-08T03:36:48.024Z
+              example:
+                message: Patient report fetched successfully
+                record:
+                  patientId: c14239c5-276a-41af-a1cf-f9ff15d13687
+                  doctorId: 7bc44e26-0485-4db3-bf56-a974e24e075a
+                  patientName: Micheal Giggs
+                  age: 58
+                  hospitalName: St Babra
+                  weight: 69kg
+                  height: 1.9m
+                  bloodGroup: O+
+                  genotype: SS
+                  bloodPressure: Negative
+                  HIV_status: Positive
+                  hepatitis: Negative
+                  createdAt: 2022-10-08T03:36:48.024Z
+                  updatedAt: 2022-10-08T03:36:48.024Z
+      deprecated: false
+  /patients/create:
+    post:
+      tags:
+        - Patient
+      summary: Create patient report
+      operationId: Createpatientreport
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/CreatepatientreportRequest"
+                - example:
+                    patientName: Sherry Doe
+                    age: 35
+                    hospitalName: St Hannah
+                    weight: 52kg
+                    height: 1.9m
+                    bloodGroup: O+
+                    genotype: AA
+                    bloodPressure: Positive
+                    HIV_status: Negative
+                    hepatitis: Negative
+            example:
+              patientName: Sherry Doe
+              age: 35
+              hospitalName: St Hannah
+              weight: 52kg
+              height: 1.9m
+              bloodGroup: O+
+              genotype: AA
+              bloodPressure: Positive
+              HIV_status: Negative
+              hepatitis: Negative
+        required: true
+      responses:
+        "201":
+          description: Created
+          headers:
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Cowboy
+            Connection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: keep-alive
+            X-Powered-By:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Express
+            Content-Length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: "442"
+            Etag:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: W/"1ba-pMdin8Hh9B7y6w5z2/U4XmHQGFo"
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Sat, 08 Oct 2022 02:18:02 GMT
+            Via:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1.1 vegur
+          content:
+            application/json; charset=utf-8:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Createpatientreport"
+                  - example:
+                      message: Patient report created successfully
+                      record:
+                        patientId: 7c707390-cdb0-4530-8a81-8028fb56a125
+                        patientName: Sherry Doe
+                        age: 35
+                        hospitalName: St Hannah
+                        weight: 52kg
+                        height: 1.9m
+                        bloodGroup: O+
+                        genotype: AA
+                        bloodPressure: Positive
+                        HIV_status: Negative
+                        hepatitis: Negative
+                        doctorId: 7c707390-cdb0-4530-8a81-8028fb56a125
+                        updatedAt: 2022-10-08T02:18:02.756Z
+                        createdAt: 2022-10-08T02:18:02.756Z
+              example:
+                message: Patient report created successfully
+                record:
+                  patientId: 7c707390-cdb0-4530-8a81-8028fb56a125
+                  patientName: Sherry Doe
+                  age: 35
+                  hospitalName: St Hannah
+                  weight: 52kg
+                  height: 1.9m
+                  bloodGroup: O+
+                  genotype: AA
+                  bloodPressure: Positive
+                  HIV_status: Negative
+                  hepatitis: Negative
+                  doctorId: 7c707390-cdb0-4530-8a81-8028fb56a125
+                  updatedAt: 2022-10-08T02:18:02.756Z
+                  createdAt: 2022-10-08T02:18:02.756Z
+      deprecated: false
+      security:
+        - bearer: []
+  /patients/update:
+    patch:
+      tags:
+        - Patient
+      summary: Update patient
+      operationId: Updatepatient
+      parameters:
+        - name: token
+          in: header
+          description: ""
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImZjZTg1MzE5LWQxM2UtNDFhMy1iMTc4LTUyNzc0NTdlNzEyMCIsImlhdCI6MTY2NTE5NzcxOCwiZXhwIjoxNjY1ODAyNTE4fQ.bP87RN4kwlrDQu8FM4kQhzoBmcsPBtewQAt4arYRhkk
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/UpdatepatientRequest"
+                - example:
+                    patientName: Jones Bolb
+                    age: 63
+                    hospitalName: St luios
+                    weight: 79kg
+                    height: 1.5m
+                    bloodGroup: A+
+                    genotype: As
+                    bloodPressure: Positive
+                    HIV_status: Negative
+                    hepatitis: Positive
+            example:
+              patientName: Jones Bolb
+              age: 63
+              hospitalName: St luios
+              weight: 79kg
+              height: 1.5m
+              bloodGroup: A+
+              genotype: As
+              bloodPressure: Positive
+              HIV_status: Negative
+              hepatitis: Positive
+        required: true
+      responses:
+        "200":
+          description: OK
+          headers:
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Cowboy
+            Connection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: keep-alive
+            X-Powered-By:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Express
+            Content-Length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: "441"
+            Etag:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: W/"1b9-ZigH7kr1cMoHmmncG2MxXK8tqGA"
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Sat, 08 Oct 2022 03:28:28 GMT
+            Via:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1.1 vegur
+          content:
+            application/json; charset=utf-8:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Updatepatient"
+                  - example:
+                      message: Patient report successfully updated
+                      record:
+                        patientId: 7dd33492-d36d-4bd5-8bc4-4809a7c10c30
+                        doctorId: 24085720-be18-4ac1-83d0-a3e9a881d98a
+                        patientName: Jones Bolb
+                        age: 63
+                        hospitalName: St luios
+                        weight: 79kg
+                        height: 1.5m
+                        bloodGroup: A+
+                        genotype: As
+                        bloodPressure: Positive
+                        HIV_status: Negative
+                        hepatitis: Positive
+                        createdAt: 2022-10-08T03:25:52.828Z
+                        updatedAt: 2022-10-08T03:28:28.662Z
+              example:
+                message: Patient report successfully updated
+                record:
+                  patientId: 7dd33492-d36d-4bd5-8bc4-4809a7c10c30
+                  doctorId: 24085720-be18-4ac1-83d0-a3e9a881d98a
+                  patientName: Jones Bolb
+                  age: 63
+                  hospitalName: St luios
+                  weight: 79kg
+                  height: 1.5m
+                  bloodGroup: A+
+                  genotype: As
+                  bloodPressure: Positive
+                  HIV_status: Negative
+                  hepatitis: Positive
+                  createdAt: 2022-10-08T03:25:52.828Z
+                  updatedAt: 2022-10-08T03:28:28.662Z
+      deprecated: false
+  /patients/delete/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+        description: The user ID
+    delete:
+      tags:
+        - Patient
+      summary: Delete patient
+      operationId: Deletepatient
+      parameters: []
+      responses:
+        "200":
+          description: OK
+          headers:
+            Server:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Cowboy
+            Connection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: keep-alive
+            X-Powered-By:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Express
+            Content-Length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: "45"
+            Etag:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: W/"2d-EyY+Vrs5Tt4zVv4n/sRtrp8VpLc"
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Sat, 08 Oct 2022 02:59:17 GMT
+            Via:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 1.1 vegur
+          content:
+            application/json; charset=utf-8:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Deletepatient"
+                  - example:
+                      msg: Patient report deleted successfully
+              example:
+                msg: Patient report deleted successfully
+      deprecated: false
+components:
+  schemas:
+    Getalldoctor:
+      title: Getalldoctor
+      required:
+        - message
+        - count
+        - record
+      type: object
+      properties:
+        message:
+          type: string
+        count:
+          type: integer
+          format: int32
+        record:
+          type: array
+          items:
+            $ref: "#/components/schemas/Record"
+          description: ""
+      example:
+        message: Doctors profiles fetched successfully
+        count: 1
+        record:
+          - id: 7c707390-cdb0-4530-8a81-8028fb56a125
+            DoctorsName: Joe Jones
+            email: jones@examples.com
+            specialization: Surgeon
+            gender: male
+            phoneNumber: 9089647112
+            password: $2a$08$7qkonNNOnKCMT4FxrDM5reP6MftISRVxW/VYfp/dYGtmyghdmictO
+            createdAt: 2022-10-08T02:17:20.611Z
+            updatedAt: 2022-10-08T02:17:20.611Z
+            Patient Report:
+              - patientId: 7c707390-cdb0-4530-8a81-8028fb56a125
+                doctorId: 7c707390-cdb0-4530-8a81-8028fb56a125
+                patientName: Sherry Doe
+                age: 35
+                hospitalName: St Hannah
+                weight: 52kg
+                height: 1.9m
+                bloodGroup: O+
+                genotype: AA
+                bloodPressure: Positive
+                HIV_status: Negative
+                hepatitis: Negative
+                createdAt: 2022-10-08T02:18:02.756Z
+                updatedAt: 2022-10-08T02:18:02.756Z
+    Record:
+      title: Record
+      required:
+        - id
+        - DoctorsName
+        - email
+        - specialization
+        - gender
+        - phoneNumber
+        - password
+        - createdAt
+        - updatedAt
+        - Patient Report
+      type: object
+      properties:
+        id:
+          type: string
+        DoctorsName:
+          type: string
+        email:
+          type: string
+        specialization:
+          type: string
+        gender:
+          type: string
+        phoneNumber:
+          type: integer
+          format: int64
+        password:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        Patient Report:
+          type: array
+          items:
+            $ref: "#/components/schemas/PatientReport"
+          description: ""
+      example:
+        id: 7c707390-cdb0-4530-8a81-8028fb56a125
+        DoctorsName: Joe Jones
+        email: jones@examples.com
+        specialization: Surgeon
+        gender: male
+        phoneNumber: 9089647112
+        password: $2a$08$7qkonNNOnKCMT4FxrDM5reP6MftISRVxW/VYfp/dYGtmyghdmictO
+        createdAt: 2022-10-08T02:17:20.611Z
+        updatedAt: 2022-10-08T02:17:20.611Z
+        Patient Report:
+          - patientId: 7c707390-cdb0-4530-8a81-8028fb56a125
+            doctorId: 7c707390-cdb0-4530-8a81-8028fb56a125
+            patientName: Sherry Doe
+            age: 35
+            hospitalName: St Hannah
+            weight: 52kg
+            height: 1.9m
+            bloodGroup: O+
+            genotype: AA
+            bloodPressure: Positive
+            HIV_status: Negative
+            hepatitis: Negative
+            createdAt: 2022-10-08T02:18:02.756Z
+            updatedAt: 2022-10-08T02:18:02.756Z
+    PatientReport:
+      title: PatientReport
+      required:
+        - patientId
+        - doctorId
+        - patientName
+        - age
+        - hospitalName
+        - weight
+        - height
+        - bloodGroup
+        - genotype
+        - bloodPressure
+        - HIV_status
+        - hepatitis
+        - createdAt
+        - updatedAt
+      type: object
+      properties:
+        patientId:
+          type: string
+        doctorId:
+          type: string
+        patientName:
+          type: string
+        age:
+          type: integer
+          format: int32
+        hospitalName:
+          type: string
+        weight:
+          type: string
+        height:
+          type: string
+        bloodGroup:
+          type: string
+        genotype:
+          type: string
+        bloodPressure:
+          type: string
+        HIV_status:
+          type: string
+        hepatitis:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      example:
+        patientId: 7c707390-cdb0-4530-8a81-8028fb56a125
+        doctorId: 7c707390-cdb0-4530-8a81-8028fb56a125
+        patientName: Sherry Doe
+        age: 35
+        hospitalName: St Hannah
+        weight: 52kg
+        height: 1.9m
+        bloodGroup: O+
+        genotype: AA
+        bloodPressure: Positive
+        HIV_status: Negative
+        hepatitis: Negative
+        createdAt: 2022-10-08T02:18:02.756Z
+        updatedAt: 2022-10-08T02:18:02.756Z
+    RegisterdoctorRequest:
+      title: RegisterdoctorRequest
+      required:
+        - DoctorsName
+        - email
+        - specialization
+        - gender
+        - phoneNumber
+        - password
+        - confirm_password
+      type: object
+      properties:
+        DoctorsName:
+          type: string
+        email:
+          type: string
+        specialization:
+          type: string
+        gender:
+          type: string
+        phoneNumber:
+          type: string
+        password:
+          type: string
+        confirm_password:
+          type: string
+      example:
+        DoctorsName: Joe Jones
+        email: jones@examples.com
+        specialization: Surgeon
+        gender: male
+        phoneNumber: "09089647112"
+        password: "12345"
+        confirm_password: "12345"
+    Registerdoctor:
+      title: Registerdoctor
+      required:
+        - message
+        - record
+      type: object
+      properties:
+        message:
+          type: string
+        record:
+          allOf:
+            - $ref: "#/components/schemas/Record1"
+            - {}
+      example:
+        message: You have successfully created a user
+        record:
+          id: e8c03861-e60c-4fde-8b4f-0b6aaace1ca7
+          DoctorsName: Joe Jones
+          email: jones@examples.com
+          specialization: Surgeon
+          gender: male
+          phoneNumber: "09089647112"
+          password: $2a$08$7pgd6pqYoFye4ZJD.cf5ue0B.g6GFqhdGMzYet6k8oGo.Oc6nfJ0K
+          updatedAt: 2022-10-08T01:19:21.985Z
+          createdAt: 2022-10-08T01:19:21.985Z
+    Record1:
+      title: Record1
+      required:
+        - id
+        - DoctorsName
+        - email
+        - specialization
+        - gender
+        - phoneNumber
+        - password
+        - updatedAt
+        - createdAt
+      type: object
+      properties:
+        id:
+          type: string
+        DoctorsName:
+          type: string
+        email:
+          type: string
+        specialization:
+          type: string
+        gender:
+          type: string
+        phoneNumber:
+          type: string
+        password:
+          type: string
+        updatedAt:
+          type: string
+        createdAt:
+          type: string
+      example:
+        id: e8c03861-e60c-4fde-8b4f-0b6aaace1ca7
+        DoctorsName: Joe Jones
+        email: jones@examples.com
+        specialization: Surgeon
+        gender: male
+        phoneNumber: "09089647112"
+        password: $2a$08$7pgd6pqYoFye4ZJD.cf5ue0B.g6GFqhdGMzYet6k8oGo.Oc6nfJ0K
+        updatedAt: 2022-10-08T01:19:21.985Z
+        createdAt: 2022-10-08T01:19:21.985Z
+    LoginDoctorRequest:
+      title: LoginDoctorRequest
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: jones@examples.com
+        password: "12345"
+    LoginDoctor:
+      title: LoginDoctor
+      required:
+        - message
+        - token
+        - doctor
+      type: object
+      properties:
+        message:
+          type: string
+        token:
+          type: string
+        doctor:
+          allOf:
+            - $ref: "#/components/schemas/Doctor"
+            - {}
+      example:
+        message: Login Successfully
+        token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU4YzAzODYxLWU2MGMtNGZkZS04YjRmLTBiNmFhYWNlMWNhNyIsImlhdCI6MTY2NTE5MjAxNywiZXhwIjoxNjY1Nzk2ODE3fQ.ecTu4yAULeCqTtfVfbeX7uXqy4yjK7pVQkcooW1I-vs
+        doctor:
+          id: e8c03861-e60c-4fde-8b4f-0b6aaace1ca7
+          DoctorsName: Joe Jones
+          email: jones@examples.com
+          specialization: Surgeon
+          gender: male
+          phoneNumber: 9089647112
+          password: $2a$08$7pgd6pqYoFye4ZJD.cf5ue0B.g6GFqhdGMzYet6k8oGo.Oc6nfJ0K
+          createdAt: 2022-10-08T01:19:21.985Z
+          updatedAt: 2022-10-08T01:19:21.985Z
+    Doctor:
+      title: Doctor
+      required:
+        - id
+        - DoctorsName
+        - email
+        - specialization
+        - gender
+        - phoneNumber
+        - password
+        - createdAt
+        - updatedAt
+      type: object
+      properties:
+        id:
+          type: string
+        DoctorsName:
+          type: string
+        email:
+          type: string
+        specialization:
+          type: string
+        gender:
+          type: string
+        phoneNumber:
+          type: integer
+          format: int64
+        password:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      example:
+        id: e8c03861-e60c-4fde-8b4f-0b6aaace1ca7
+        DoctorsName: Joe Jones
+        email: jones@examples.com
+        specialization: Surgeon
+        gender: male
+        phoneNumber: 9089647112
+        password: $2a$08$7pgd6pqYoFye4ZJD.cf5ue0B.g6GFqhdGMzYet6k8oGo.Oc6nfJ0K
+        createdAt: 2022-10-08T01:19:21.985Z
+        updatedAt: 2022-10-08T01:19:21.985Z
+    Getallpatient:
+      title: Getallpatient
+      required:
+        - msg
+        - count
+        - record
+      type: object
+      properties:
+        msg:
+          type: string
+        count:
+          type: integer
+          format: int32
+        record:
+          type: array
+          items:
+            $ref: "#/components/schemas/Record2"
+          description: ""
+      example:
+        msg: Patient reports fetched successfully
+        count: 1
+        record:
+          - patientId: 6143e57d-b8d1-463a-ba2b-224f018feb3e
+            doctorId: fce85319-d13e-41a3-b178-5277457e7120
+            patientName: Tammy Jones
+            age: 35
+            hospitalName: St Babra
+            weight: 46kg
+            height: 1.5m
+            bloodGroup: O+
+            genotype: AS
+            bloodPressure: Negative
+            HIV_status: Negative
+            hepatitis: Positive
+            createdAt: 2022-10-08T02:57:49.090Z
+            updatedAt: 2022-10-08T02:57:49.090Z
+            Doctors:
+              id: fce85319-d13e-41a3-b178-5277457e7120
+              DoctorsName: Joe Jones
+              email: jones@examples.com
+              specialization: Surgeon
+              phoneNumber: 9089647112
+    Record2:
+      title: Record2
+      required:
+        - patientId
+        - doctorId
+        - patientName
+        - age
+        - hospitalName
+        - weight
+        - height
+        - bloodGroup
+        - genotype
+        - bloodPressure
+        - HIV_status
+        - hepatitis
+        - createdAt
+        - updatedAt
+        - Doctors
+      type: object
+      properties:
+        patientId:
+          type: string
+        doctorId:
+          type: string
+        patientName:
+          type: string
+        age:
+          type: integer
+          format: int32
+        hospitalName:
+          type: string
+        weight:
+          type: string
+        height:
+          type: string
+        bloodGroup:
+          type: string
+        genotype:
+          type: string
+        bloodPressure:
+          type: string
+        HIV_status:
+          type: string
+        hepatitis:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        Doctors:
+          allOf:
+            - $ref: "#/components/schemas/Doctors"
+            - {}
+      example:
+        patientId: 6143e57d-b8d1-463a-ba2b-224f018feb3e
+        doctorId: fce85319-d13e-41a3-b178-5277457e7120
+        patientName: Tammy Jones
+        age: 35
+        hospitalName: St Babra
+        weight: 46kg
+        height: 1.5m
+        bloodGroup: O+
+        genotype: AS
+        bloodPressure: Negative
+        HIV_status: Negative
+        hepatitis: Positive
+        createdAt: 2022-10-08T02:57:49.090Z
+        updatedAt: 2022-10-08T02:57:49.090Z
+        Doctors:
+          id: fce85319-d13e-41a3-b178-5277457e7120
+          DoctorsName: Joe Jones
+          email: jones@examples.com
+          specialization: Surgeon
+          phoneNumber: 9089647112
+    Doctors:
+      title: Doctors
+      required:
+        - id
+        - DoctorsName
+        - email
+        - specialization
+        - phoneNumber
+      type: object
+      properties:
+        id:
+          type: string
+        DoctorsName:
+          type: string
+        email:
+          type: string
+        specialization:
+          type: string
+        phoneNumber:
+          type: integer
+          format: int64
+      example:
+        id: fce85319-d13e-41a3-b178-5277457e7120
+        DoctorsName: Joe Jones
+        email: jones@examples.com
+        specialization: Surgeon
+        phoneNumber: 9089647112
+    Getsinglepatient:
+      title: Getsinglepatient
+      required:
+        - message
+        - record
+      type: object
+      properties:
+        message:
+          type: string
+        record:
+          allOf:
+            - $ref: "#/components/schemas/Record3"
+            - {}
+      example:
+        message: Patient report fetched successfully
+        record:
+          patientId: c14239c5-276a-41af-a1cf-f9ff15d13687
+          doctorId: 7bc44e26-0485-4db3-bf56-a974e24e075a
+          patientName: Micheal Giggs
+          age: 58
+          hospitalName: St Babra
+          weight: 69kg
+          height: 1.9m
+          bloodGroup: O+
+          genotype: SS
+          bloodPressure: Negative
+          HIV_status: Positive
+          hepatitis: Negative
+          createdAt: 2022-10-08T03:36:48.024Z
+          updatedAt: 2022-10-08T03:36:48.024Z
+    Record3:
+      title: Record3
+      required:
+        - patientId
+        - doctorId
+        - patientName
+        - age
+        - hospitalName
+        - weight
+        - height
+        - bloodGroup
+        - genotype
+        - bloodPressure
+        - HIV_status
+        - hepatitis
+        - createdAt
+        - updatedAt
+      type: object
+      properties:
+        patientId:
+          type: string
+        doctorId:
+          type: string
+        patientName:
+          type: string
+        age:
+          type: integer
+          format: int32
+        hospitalName:
+          type: string
+        weight:
+          type: string
+        height:
+          type: string
+        bloodGroup:
+          type: string
+        genotype:
+          type: string
+        bloodPressure:
+          type: string
+        HIV_status:
+          type: string
+        hepatitis:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      example:
+        patientId: c14239c5-276a-41af-a1cf-f9ff15d13687
+        doctorId: 7bc44e26-0485-4db3-bf56-a974e24e075a
+        patientName: Micheal Giggs
+        age: 58
+        hospitalName: St Babra
+        weight: 69kg
+        height: 1.9m
+        bloodGroup: O+
+        genotype: SS
+        bloodPressure: Negative
+        HIV_status: Positive
+        hepatitis: Negative
+        createdAt: 2022-10-08T03:36:48.024Z
+        updatedAt: 2022-10-08T03:36:48.024Z
+    CreatepatientreportRequest:
+      title: CreatepatientreportRequest
+      required:
+        - patientName
+        - age
+        - hospitalName
+        - weight
+        - height
+        - bloodGroup
+        - genotype
+        - bloodPressure
+        - HIV_status
+        - hepatitis
+      type: object
+      properties:
+        patientName:
+          type: string
+        age:
+          type: integer
+          format: int32
+        hospitalName:
+          type: string
+        weight:
+          type: string
+        height:
+          type: string
+        bloodGroup:
+          type: string
+        genotype:
+          type: string
+        bloodPressure:
+          type: string
+        HIV_status:
+          type: string
+        hepatitis:
+          type: string
+      example:
+        patientName: Sherry Doe
+        age: 35
+        hospitalName: St Hannah
+        weight: 52kg
+        height: 1.9m
+        bloodGroup: O+
+        genotype: AA
+        bloodPressure: Positive
+        HIV_status: Negative
+        hepatitis: Negative
+    Createpatientreport:
+      title: Createpatientreport
+      required:
+        - message
+        - record
+      type: object
+      properties:
+        message:
+          type: string
+        record:
+          allOf:
+            - $ref: "#/components/schemas/Record3"
+            - {}
+      example:
+        message: Patient report created successfully
+        record:
+          patientId: 7c707390-cdb0-4530-8a81-8028fb56a125
+          patientName: Sherry Doe
+          age: 35
+          hospitalName: St Hannah
+          weight: 52kg
+          height: 1.9m
+          bloodGroup: O+
+          genotype: AA
+          bloodPressure: Positive
+          HIV_status: Negative
+          hepatitis: Negative
+          doctorId: 7c707390-cdb0-4530-8a81-8028fb56a125
+          updatedAt: 2022-10-08T02:18:02.756Z
+          createdAt: 2022-10-08T02:18:02.756Z
+    UpdatepatientRequest:
+      title: UpdatepatientRequest
+      required:
+        - patientName
+        - age
+        - hospitalName
+        - weight
+        - height
+        - bloodGroup
+        - genotype
+        - bloodPressure
+        - HIV_status
+        - hepatitis
+      type: object
+      properties:
+        patientName:
+          type: string
+        age:
+          type: integer
+          format: int32
+        hospitalName:
+          type: string
+        weight:
+          type: string
+        height:
+          type: string
+        bloodGroup:
+          type: string
+        genotype:
+          type: string
+        bloodPressure:
+          type: string
+        HIV_status:
+          type: string
+        hepatitis:
+          type: string
+      example:
+        patientName: John Doe
+        age: 63
+        hospitalName: St luios
+        weight: 79kg
+        height: 1.5m
+        bloodGroup: A+
+        genotype: As
+        bloodPressure: Positive
+        HIV_status: Negative
+        hepatitis: Positive
+    Updatepatient:
+      title: Updatepatient
+      required:
+        - message
+        - record
+      type: object
+      properties:
+        message:
+          type: string
+        record:
+          allOf:
+            - $ref: "#/components/schemas/Record3"
+            - {}
+      example:
+        message: Patient report successfully updated
+        record:
+          patientId: 7dd33492-d36d-4bd5-8bc4-4809a7c10c30
+          doctorId: 24085720-be18-4ac1-83d0-a3e9a881d98a
+          patientName: John Doe
+          age: 63
+          hospitalName: St luios
+          weight: 79kg
+          height: 1.5m
+          bloodGroup: A+
+          genotype: As
+          bloodPressure: Positive
+          HIV_status: Negative
+          hepatitis: Positive
+          createdAt: 2022-10-08T03:25:52.828Z
+          updatedAt: 2022-10-08T03:28:28.662Z
+    Deletepatient:
+      title: Deletepatient
+      required:
+        - msg
+      type: object
+      properties:
+        msg:
+          type: string
+      example:
+        msg: Patient report deleted successfully
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+security: []
+tags:
+  - name: Doctor
+  - name: Patient

@@ -5,6 +5,10 @@ import cookieParser from "cookie-parser";
 import logger from "morgan";
 import db from "./config/database.config";
 import cors from "cors";
+import swagger from "swagger-ui-express";
+import yamljs from "yamljs";
+
+const swaggerDoc = yamljs.load("./documentation.yaml");
 
 db.sync()
   // db.sync({ force: true })
@@ -71,9 +75,10 @@ app.use(
 app.use(express.static(path.join(__dirname, "public")));
 
 // app.use("/", viewsRouter);
-app.use("/", indexRouter);
+// app.use("/", indexRouter);
 app.use("/api-v1/doctors", doctorRouter);
 app.use("/api-v1/patients", reportRouter);
+app.use("/", swagger.serve, swagger.setup(swaggerDoc));
 
 // catch 404 and forward to error handler
 app.use(function (req: Request, res: Response, next: NextFunction) {

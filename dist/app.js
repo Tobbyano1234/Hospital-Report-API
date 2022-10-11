@@ -10,13 +10,15 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const morgan_1 = __importDefault(require("morgan"));
 const database_config_1 = __importDefault(require("./config/database.config"));
 const cors_1 = __importDefault(require("cors"));
+const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
+const yamljs_1 = __importDefault(require("yamljs"));
+const swaggerDoc = yamljs_1.default.load("./documentation.yaml");
 database_config_1.default.sync()
     // db.sync({ force: true })
     .then(() => {
     console.log(`Database connected successfully`);
 })
     .catch((err) => console.log(err));
-const indexRoute_1 = __importDefault(require("./routes/indexRoute"));
 const doctors_1 = __importDefault(require("./routes/doctors"));
 const reports_1 = __importDefault(require("./routes/reports"));
 const app = (0, express_1.default)();
@@ -66,9 +68,10 @@ app.use((0, cors_1.default)({
 }));
 app.use(express_1.default.static(path_1.default.join(__dirname, "public")));
 // app.use("/", viewsRouter);
-app.use("/", indexRoute_1.default);
+// app.use("/", indexRouter);
 app.use("/api-v1/doctors", doctors_1.default);
 app.use("/api-v1/patients", reports_1.default);
+app.use("/", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swaggerDoc));
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     next((0, http_errors_1.default)(404));
